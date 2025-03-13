@@ -16,3 +16,18 @@ def root():
 def get_all_tasks():
     return tasks
 
+@app.get("/")
+def get_task():
+    return "Hello World"
+
+@app.put("/")
+def update_task():
+    return "Hello World"
+
+@app.post("/")
+def create_task():
+    return "Hello World"
+
+@app.delete("/")
+def delete_task():
+    return "Hello World"
