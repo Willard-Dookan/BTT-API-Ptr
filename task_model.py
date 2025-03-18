@@ -1,16 +1,46 @@
-from pydantic import BaseModel
+from fastapi import APIRouter
+from task_model import Task
 
-cur_id = 0
+tasks = [
+    Task(),
+    Task()
+]
 
-def increment():
-    global cur_id
-    cur_id += 1
-    return cur_id
 
-class Task(BaseModel):
-    id: int 
-    description: str = ""
-    isComplete: bool = False
+task_router = APIRouter(prefix="/task")
 
-    def __init__(self, **data):
-        super().__init__(id= increment(), **data)
+
+@task_router.get("/get-all")
+def get_all_tasks():
+    return tasks
+
+@task_router.get("/{task_id}")
+def get_task(task_id:int):
+    
+    for task in tasks:
+        if task.id == task_id:
+            return task
+        
+    return "Could not find task"
+
+@task_router.put("/update/{task_id}")
+def update_task(task_id: int, updated: Task):
+    for task in tasks:
+        if task.id == task_id:
+            task.description = updated.description
+            task.isComplete = updated.isComplete
+            return f'Updated task with id {task_id}'
+    return "Task not found"
+
+@task_router.post("/create")
+def create_task(new_task: Task):
+    tasks.append(new_task)
+    return "Created Successfully"
+
+@task_router.delete("/")
+def delete_task(task_id: int):
+    for index, task in enumerate(tasks):
+        if task.id == task_id:
+            tasks.pop(index)
+            return f"Deleted task with id {task_id}"
+    return "Task not found"
