@@ -5,6 +5,7 @@ app = FastAPI()
 
 tasks = [
     Task(),
+    Task(),
     Task()
 ]
 
