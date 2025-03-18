@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from task_model import Task
 
-tasks = [
+Tasks = [
     Task(),
     Task()
 ]
